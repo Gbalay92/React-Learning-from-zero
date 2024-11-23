@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter"
-import { useState, useEffect } from "react"
-import getGifs from "../../services/getGifs"
+import { useState} from "react"
 import ListOfGifs from "../../components/ListOfGifs"
+import { useGifs } from "../../hooks/useGifs"
 
 const POPULAR_GIFS = ["Matrix", "Chile", "Colombia", "Ecuador"]
 
@@ -9,19 +9,8 @@ export default function Home() {
     const [keyword, setKeyword] = useState('')
     const [path, pushLocation] = useLocation()
     
-    const [loading, setLoading] = useState(false)
-    const [gifs, setGifs] = useState([])
-
-    useEffect(function () {
-        setLoading(true)
-        getGifs({ keyword: 'Rick' })
-        .then(gifs => {
-            setGifs(gifs)
-            setLoading(false)
-        })
-    }, [keyword])
+    const {loading, gifs} = useGifs ()
     
-
     const handleSubmit = evt => {
         evt.preventDefault()
         pushLocation(`/search/${keyword}`)
